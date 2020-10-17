@@ -59,7 +59,7 @@ class FibonacciHeap{
     }
 
     NodeB<T>* findMin(){
-        NodeB<T>* retorno=new NodeB<T>(INT_MAX);
+        NodeB<T>* retorno=new NodeB<T>(1e18,-1,-1);
         for(NodeB<T>* node : heap){
             if(retorno->key > node->key){
                 retorno = node;
@@ -72,14 +72,15 @@ public:
 
     FibonacciHeap(){};
 
-    void insert(T elem){
-        insert(new NodeB<T>(elem));
+    void insert(T value, int from, int to){
+        insert(new NodeB<T>(value, from, to));
     }
 
-    T extractMin(){
-        T key = min->key;
+    NodeB<T>* extractMin(){
+        NodeB<T>* node = min;
         deleteMin();
-        return key;
+        this->size--;
+        return node;
     }
 
     void deleteMin(){
@@ -91,6 +92,9 @@ public:
         min = findMin();
     }
     
+    int getSize(){
+        return size;
+    }
 
     /*void print(){
         for(auto it:heap){
@@ -99,7 +103,7 @@ public:
         }
     }*/
 
-    void omegaprint(int i){
+    void omegaprint(){
         cont=0;
         fstream output("graphviz.dot", ios::out | ios::trunc);
         output << "graph \"\"" << endl;
