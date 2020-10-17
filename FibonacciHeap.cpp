@@ -3,10 +3,10 @@
 #include <unistd.h>
 
 template< typename T>
-class BinomialHeap{
+class FibonacciHeap{
     int size=0;
     int grade=0;
-    multimap<int,NodeB<T>*> heap;
+    list<NodeB<T>*> heap;
     NodeB<T>* min=nullptr;
     
     NodeB<T>* unir(NodeB<T>* a,NodeB<T>* b){
@@ -28,17 +28,25 @@ class BinomialHeap{
         
     }
 
+    void compactar_aux(vector<NodeB<T>*> &grades, NodeB<T>* node){
+        if(grades[node->grade] == nullptr){
+            grades[node->grade] = node;
+        } else {
+            auto cur_grade = node->grade;
+            NodeB<T>* temp = unir(node, grades[node->grade]);
+            grades[cur_grade] = nullptr;
+            compactar_aux(grades, temp);
+        }    
+    }
+
     void compactar(){
-        for(int i=0; i<=grade; i++){
-            if(heap.count(i) > 1){
-                auto itr = heap.find(i);
-                auto first = itr->second;
-                itr++;
-                auto second= itr->second;
-                NodeB<T>* ptr = unir(first, second);
-                heap.erase(i);
-                heap.insert({i+1,ptr});
-            }
+        vector<NodeB<T>*> grades(log2(this->size)+1,nullptr);
+        for(NodeB<T>* node : heap){
+            compactar_aux(grades,node);
+        }
+        heap.clear();
+        for(NodeB<T>* node : grades){
+            if(node != nullptr) heap.push_back(node);
         }
     }
 
@@ -46,84 +54,64 @@ class BinomialHeap{
         if(min==nullptr or min->key>elem->key){
             min=elem;
         }
-        heap.insert({elem->grade,elem});
-        compactar();
+        heap.push_back(elem);
         size++;
     }
 
     NodeB<T>* findMin(){
         NodeB<T>* retorno=new NodeB<T>(INT_MAX);
-        for(int i=0; i<=grade; i++){
-            auto itr = heap.find(i);
-            if(itr == heap.end()) continue;
-            if(retorno->key > itr->second->key){
-                retorno = itr->second;
+        for(NodeB<T>* node : heap){
+            if(retorno->key > node->key){
+                retorno = node;
             }
-        } 
+        }
         return retorno;
-    }
-    
-    void decreaseKey(NodeB<T>* from, T to){
-        from->key=to;
-        from->decreaseKey();
     }
 
 public:
 
-    BinomialHeap(){};
+    FibonacciHeap(){};
 
     void insert(T elem){
         insert(new NodeB<T>(elem));
     }
-    
-    T getMin(){
-        return min->key;
+
+    T extractMin(){
+        T key = min->key;
+        deleteMin();
+        return key;
     }
 
     void deleteMin(){
-        heap.erase(min->grade);
+        heap.remove(min);
         for(auto it:min->children){
             this->insert(it);
         }
+        this->compactar();
         min = findMin();
-    }
-
-    void decreaseKey(T from, T to){
-        for(int i=0; i<=grade; i++){
-            if(heap.count(i) == 1){
-                auto temp= heap.find(i);
-                auto temp2 = (*temp).second->find(from);
-                if(temp2!=nullptr){
-                    decreaseKey(temp2,to);
-                    break;
-                }
-            }
-        }
     }
     
 
-    void print(){
+    /*void print(){
         for(auto it:heap){
             it.second->print();
             cout<<endl;
         }
-    }
+    }*/
 
-    void omegaprint(){
+    void omegaprint(int i){
         cont=0;
-        fstream output("graphviz2.dot", ios::out | ios::trunc);
+        fstream output("graphviz.dot", ios::out | ios::trunc);
         output << "graph \"\"" << endl;
         output << "{" << endl;
         output << "label=\"besto trabajo ever\"" << endl;
         int cnt=0;
-        for(int i=0; i<=grade; i++){
-            auto ptr = heap.find(i);
-            if(ptr == heap.end()) continue;
+        for(NodeB<T>* ptr : heap){
             output << "subgraph cluster" << cnt << endl;
             output << "{" << endl;
-            output << "label=\"Grado: " << i << "\"" << endl;
+            output << "label=\"Grado: " << ptr->grade << "\"" << endl;
             output << "n" << cnt << " ;"<< endl;
-            ptr->second->omegaprint(output,cnt);
+            ptr->omegaprint(output,cnt);
             cnt++;
             output << "}" << endl;
         }

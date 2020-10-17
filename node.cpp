@@ -13,21 +13,13 @@ struct NodeB{
 
     NodeB(T key1):key(key1),parent(nullptr){};
 
-    void print(){
+    /*void print(){
         for(auto it:children){
             it->print();
         }
         cout<<key<<" ";
         
-    }
-    
-    void decreaseKey(){
-        if(parent==nullptr)return;
-        if(parent->key>this->key){
-            parent->key=this->key;
-            parent->decreaseKey();
-        }
-    }
+    }*/
 
     NodeB<T>* find(T number){
         if (this->key==number){ 
