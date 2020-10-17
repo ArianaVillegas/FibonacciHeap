@@ -1,4 +1,4 @@
-#include "FibonacciHeap.cpp"
+#include "FibonacciHeap.h"
 
 //int arr[] = {8, 9, 3, 5, 9, 1, 6, 7, 2, 2};
 
