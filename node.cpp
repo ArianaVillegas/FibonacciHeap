@@ -10,8 +10,9 @@ struct NodeB{
     T key;
     vector<NodeB<T>*> children;
     NodeB<T>* parent;
+    int from,to;
 
-    NodeB(T key1):key(key1),parent(nullptr){};
+    NodeB(T key1, int from, int to):key(key1),from(from),to(to),parent(nullptr){};
 
     /*void print(){
         for(auto it:children){
