@@ -15,7 +15,6 @@ vector<float>  Vectorizar(CImg<float>   & img )
          vector<float> R;
          cimg_forXY(img,x,y) 
           { 
-            cout<<img(x,y,0,0)<<endl;
               R.push_back( (img(x,y,0) + img(x,y,1) +  img(x,y,2))/3);
           }
          return R;
@@ -24,23 +23,24 @@ vector<float>  Vectorizar(CImg<float>   & img )
 int main()
 {
     //find /home/cesar/Desktop/git/eda/nuevo\ inicio\ /FibonacciHeap -type f -exec file --mime-type {}  \; | awk '{if ($NF == "image/jpeg") print $3 }' >files.txt
-    fstream a("files2.txt");
+    fstream a("files.txt");
     
     while(a>>temp){
         files.push_back(temp);
     }  
-    //for(auto it:files){
-        CImg<float>   A(/*it.c_str()*/"93369231.jpg");
+    for(int i=0;i<files.size();i++){
+        CImg<float>   A(files[i].c_str());
         A = A.resize(160,160);
-        CImg<float>   B =  A.haar(false,2);
-        CImg<float>   c  = B.crop(0,0,10,10);
+        CImg<float>   B =  A.haar(false,4);
+        CImg<float>   c  = B.crop(0,0,9,9);
         vector<float> vc = Vectorizar(c);
 
+        cout<<files[i]<<" ";
         for ( auto it2:vc){
             cout<<it2<<" ";
         }
         cout<<endl;
-    //}
+    }
 
 
    
