@@ -61,6 +61,7 @@ public:
 
 	void insertNode(Node* node){
 		nodes.push_back(node);
+		size++;
 	}
 
 	void insertEdge(Edge* edge){
@@ -98,6 +99,8 @@ public:
 	Graph<T> kruskal(){
 		Graph<T> temp;
 		FibonacciHeap<T> variable;
+
+		cout << size << '\n';
 
 		for(Edge* e:edges){
 			variable.insert(e->value,e->from,e->to);
