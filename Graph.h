@@ -4,6 +4,11 @@
 
 template<typename T>
 class Graph{
+
+	struct Node{
+		vector<T> image;
+		string image_name;
+	};
 	
 	struct Edge{
 		int from, to;
@@ -12,8 +17,8 @@ class Graph{
 
 	vector<int> rank;
 	vector<int> parent;
-	vector<Edge> edges;
-	vector<string> image_names;
+	vector<Edge*> edges;
+	vector<Node*> nodes;
 
 	int size = 0;
 
@@ -44,53 +49,58 @@ public:
 
 	Graph(){};
 
-	void insert(int from, int to, T value){
-		edges.push_back({from,to,value});
+	Node* newNode(){
+		Node* node = new Node();
+		return node;
+	}
+
+	Edge* newEdge(){
+		Edge* edge = new Edge();
+		return edge;
+	}
+
+	void insertNode(Node* node){
+		nodes.push_back(node);
+	}
+
+	void insertEdge(Edge* edge){
+		edges.push_back(edge);
 	}
 
 	void insertFile(string filename){
-		vector<vector<long double>> data;
-
 	    ifstream infile;
 	    infile.open(filename);
 
-	    string line;
-	    vector<long double> image;
+	    string line, image_name;
+	    vector<T> image;
 	    while (getline(infile, line)) {
 	        stringstream ss(line);
 	        image.clear();
+	        Node* node = newNode();
 	        if(getline(ss, line, ' ')){
-	            this->image_names.push_back(line);
+	            node->image_name = line;
 	        }
 	        while(getline(ss, line, ' ')){
-	            image.push_back(stold(line));
+	            node->image.push_back(stold(line));
 	        }
-	        data.push_back(image);
+	        insertNode(node);
 	    }
-
-	    this->size = data.size();
 
 	    for(int i=0; i<size-1; i++){
 	        for(int j=i+1; j<size; j++){
-	            insert(i,j,dist(data[i],data[j]));
+	        	Edge* edge = newEdge();
+	        	(*edge) = {i,j,dist(nodes[i]->image,nodes[j]->image)};
+	            insertEdge(edge);
 	        }
 	    }
-	}
-
-	void setSize(int size){
-		this->size = size;
-	}
-
-	void setImageNames(vector<string> image_names){
-		this->image_names = image_names;
 	}
 
 	Graph<T> kruskal(){
 		Graph<T> temp;
 		FibonacciHeap<T> variable;
 
-		for(Edge e:edges){
-			variable.insert(e.value,e.from,e.to);
+		for(Edge* e:edges){
+			variable.insert(e->value,e->from,e->to);
 		}
 
 		rank.clear();
@@ -106,20 +116,19 @@ public:
 		while(variable.getSize() && num_edges < size-1){
 			NodeB<T>* min = variable.extractMin();
 			if(find_set(min->from) != find_set(min->to)){
-				temp.insert(min->from, min->to, min->key);
+				Edge* edge = newEdge();
+	        	(*edge) = {min->from, min->to, min->key};
+				temp.insertEdge(edge);
 				union_sets(min->from, min->to);
 				num_edges++;
 			}
 		}
 
-		temp.setSize(size);
-		temp.setImageNames(image_names);
-
 		return temp;
 	}
 
 	void clusterize(int k){
-		k = min(k,size)
+		k = min(k,size);
 		while(k--){
 			edges.pop_back();
 		}
@@ -136,11 +145,12 @@ public:
         output << "graph " << endl;
         output << "{" << endl;
         for(int i=0; i<size; i++){
-        	output << i << "[image=\"" << image_names[i] << "\",label=\"\"];" << endl;
+        	output << i << "[image=\"" << nodes[i]->image_name << "\",label=\"\"];";
+        	output << endl;
         }
-        for(Edge e : this->edges){
-            output << e.from << " -- " << e.to << "[label=\"" << e.value << "\",";
-            output << "weight=\"" << e.value << "\"];" << endl;
+        for(Edge* e : this->edges){
+            output << e->from << " -- " << e->to << "[label=\"" << e->value << "\",";
+            output << "weight=\"" << e->value << "\"];" << endl;
         }
         output << "}" << endl;
 	}
