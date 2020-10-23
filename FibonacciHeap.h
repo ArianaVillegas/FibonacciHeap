@@ -55,7 +55,6 @@ class FibonacciHeap{
             min=elem;
         }
         heap.push_back(elem);
-        size++;
     }
 
     NodeB<T>* findMin(){
@@ -74,6 +73,7 @@ public:
 
     void insert(T value, int from, int to){
         insert(new NodeB<T>(value, from, to));
+        this->size++;
     }
 
     NodeB<T>* extractMin(){

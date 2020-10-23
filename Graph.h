@@ -9,14 +9,16 @@ class Graph{
 		T value;
 	};
 
-	vector<Edge> edges;
+	vector<int> rank;
 	vector<int> parent;
+	vector<Edge> edges;
 	vector<string> image_names;
 
 	int size = 0;
 
 	void make_set(int v) {
 	    parent[v] = v;
+	    rank[v] = 0;
 	}
 
 	int find_set(int v) {
@@ -29,7 +31,11 @@ class Graph{
 	    a = find_set(a);
 	    b = find_set(b);
 	    if (a != b) {
+	    	if (rank[a] < rank[b])
+            	swap(a, b);
 	        parent[b] = a;
+	        if (rank[a] == rank[b])
+            	rank[a]++;
 	    }
 	}
 
@@ -51,29 +57,33 @@ public:
 
 	Graph<T> kruskal(){
 		Graph<T> temp;
-		temp.setSize(size);
-		temp.setImageNames(image_names);
 		FibonacciHeap<T> variable;
 
 		for(Edge e:edges){
 			variable.insert(e.value,e.from,e.to);
 		}
 
+		rank.clear();
 		parent.clear();
+		rank.resize(size);
 		parent.resize(size);
 
 		for(int i=0; i<size; i++){
 			this->make_set(i);
 		}
 
-		while(variable.getSize()){
+		int num_edges = 0;
+		while(variable.getSize() && num_edges < size-1){
 			NodeB<T>* min = variable.extractMin();
 			if(find_set(min->from) != find_set(min->to)){
 				temp.insert(min->from, min->to, min->key);
-				cout << min->from << ' ' << min->to << '\n';
 				union_sets(min->from, min->to);
+				num_edges++;
 			}
 		}
+
+		temp.setSize(size);
+		temp.setImageNames(image_names);
 
 		return temp;
 	}

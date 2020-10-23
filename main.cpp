@@ -48,6 +48,8 @@ int main(){
     //g.omegaPrint();
 
     Graph<long double> graph = g.kruskal();
-    graph.omegaPrint();
+    //graph.omegaPrint();
+
+    cout << "Termine\n";
 
 }
