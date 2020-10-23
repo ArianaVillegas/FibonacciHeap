@@ -1,5 +1,5 @@
 #include "FibonacciHeap.h"
-#include "Functions.cpp"
+#include "Functions.h"
 #include <bits/stdc++.h>
 
 template<class T>
@@ -20,7 +20,7 @@ class Graph{
 	vector<Edge*> edges;
 	vector<Node*> nodes;
 
-	long double (*dist)(vector<T>&, vector<T>&);
+	float (*dist)(vector<T>&, vector<T>&);
 
 	int size = 0;
 
@@ -51,7 +51,7 @@ public:
 
 	Graph(){};
 
-	void setDist(long double (*dist)(vector<T>&, vector<T>&)){
+	void setDist(float (*dist)(vector<T>&, vector<T>&)){
 		this->dist = dist;
 	}
 
@@ -105,8 +105,6 @@ public:
 	Graph<T> kruskal(){
 		Graph<T> temp;
 		FibonacciHeap<T> variable;
-
-		cout << size << '\n';
 
 		for(Edge* e:edges){
 			variable.insert(e->value,e->from,e->to);

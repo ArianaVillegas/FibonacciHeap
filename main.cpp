@@ -1,17 +1,20 @@
 #include "Graph.h"
+#include "ReadImage.h"
 #include <iostream>
 
 using namespace std;
 
 int main(){
 
-    Graph<long double> g;
+    readImages("files.txt","data.txt",4);
+
+    Graph<float> g;
     g.setDist(distEucledian);
     g.insertFile("data.txt");
 
     //g.omegaPrint();
 
-    Graph<long double> graph = g.kruskal();
+    Graph<float> graph = g.kruskal();
     graph.omegaPrint();
 
     cout << "Termine\n";
