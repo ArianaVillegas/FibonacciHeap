@@ -119,6 +119,10 @@ public:
 			this->make_set(i);
 		}
 
+		for(Node* node:nodes){
+			temp.insertNode(node);
+		}
+
 		int num_edges = 0;
 		while(variable.getSize() && num_edges < size-1){
 			NodeB<T>* min = variable.extractMin();
