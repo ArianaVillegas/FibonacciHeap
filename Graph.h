@@ -60,7 +60,7 @@ public:
 	        stringstream ss(line);
 	        image.clear();
 	        if(getline(ss, line, ' ')){
-	            image_names.push_back(line);
+	            this->image_names.push_back(line);
 	        }
 	        while(getline(ss, line, ' ')){
 	            image.push_back(stold(line));
@@ -68,7 +68,7 @@ public:
 	        data.push_back(image);
 	    }
 
-	    size = data.size();
+	    this->size = data.size();
 
 	    for(int i=0; i<size-1; i++){
 	        for(int j=i+1; j<size; j++){
@@ -116,6 +116,13 @@ public:
 		temp.setImageNames(image_names);
 
 		return temp;
+	}
+
+	void clusterize(int k){
+		k = min(k,size)
+		while(k--){
+			edges.pop_back();
+		}
 	}
 
 	void print(){
