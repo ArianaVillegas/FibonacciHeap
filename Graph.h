@@ -1,4 +1,5 @@
 #include "FibonacciHeap.h"
+#include "Functions.cpp"
 #include <bits/stdc++.h>
 
 template<typename T>
@@ -45,6 +46,35 @@ public:
 
 	void insert(int from, int to, T value){
 		edges.push_back({from,to,value});
+	}
+
+	void insertFile(string filename){
+		vector<vector<long double>> data;
+
+	    ifstream infile;
+	    infile.open(filename);
+
+	    string line;
+	    vector<long double> image;
+	    while (getline(infile, line)) {
+	        stringstream ss(line);
+	        image.clear();
+	        if(getline(ss, line, ' ')){
+	            image_names.push_back(line);
+	        }
+	        while(getline(ss, line, ' ')){
+	            image.push_back(stold(line));
+	        }
+	        data.push_back(image);
+	    }
+
+	    size = data.size();
+
+	    for(int i=0; i<size-1; i++){
+	        for(int j=i+1; j<size; j++){
+	            insert(i,j,dist(data[i],data[j]));
+	        }
+	    }
 	}
 
 	void setSize(int size){
