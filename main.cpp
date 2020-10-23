@@ -6,6 +6,7 @@ using namespace std;
 int main(){
 
     Graph<long double> g;
+    g.setDist(distEucledian);
     g.insertFile("data.txt");
 
     //g.omegaPrint();

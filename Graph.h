@@ -2,7 +2,7 @@
 #include "Functions.cpp"
 #include <bits/stdc++.h>
 
-template<typename T>
+template<class T>
 class Graph{
 
 	struct Node{
@@ -19,6 +19,8 @@ class Graph{
 	vector<int> parent;
 	vector<Edge*> edges;
 	vector<Node*> nodes;
+
+	long double (*dist)(vector<T>&, vector<T>&);
 
 	int size = 0;
 
@@ -48,6 +50,10 @@ class Graph{
 public:
 
 	Graph(){};
+
+	void setDist(long double (*dist)(vector<T>&, vector<T>&)){
+		this->dist = dist;
+	}
 
 	Node* newNode(){
 		Node* node = new Node();
@@ -90,7 +96,7 @@ public:
 	    for(int i=0; i<size-1; i++){
 	        for(int j=i+1; j<size; j++){
 	        	Edge* edge = newEdge();
-	        	(*edge) = {i,j,dist(nodes[i]->image,nodes[j]->image)};
+	        	(*edge) = {i,j,this->dist(nodes[i]->image,nodes[j]->image)};
 	            insertEdge(edge);
 	        }
 	    }
