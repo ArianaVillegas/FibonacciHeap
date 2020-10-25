@@ -1,4 +1,3 @@
-faces94/female/gotone/yfhsie.jpg
 faces94/female/mbutle/mbutle.16.jpg
 faces94/female/mbutle/mbutle.13.jpg
 faces94/female/mbutle/mbutle.11.jpg
@@ -79,6 +78,7 @@ faces94/female/anpage/anpage.7.jpg
 faces94/female/anpage/anpage.2.jpg
 faces94/female/anpage/anpage.11.jpg
 faces94/female/anpage/anpage.18.jpg
+faces94/female/gotone/yfhsie.jpg
 faces94/female/gotone/kaknig.jpg
 faces94/female/gotone/mbutle.jpg
 faces94/female/gotone/astefa.jpg

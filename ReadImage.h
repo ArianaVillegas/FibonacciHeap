@@ -1,3 +1,4 @@
+#define cimg_use_jpeg 1
 #include "CImg.h"
 #include <vector>
 #include <iostream>

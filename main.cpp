@@ -8,9 +8,12 @@ using namespace std;
 
 int main(){
 
-    //readImages("files.txt","data.txt",4);
-
-    Graph<float> g;
+    /*readImages("files.txt","data1.txt",1);
+    readImages("files.txt","data2.txt",2);
+    readImages("files.txt","data3.txt",3);
+    readImages("files.txt","data4.txt",4);
+    */
+    /*Graph<float> g;
     g.setDist(distEucledian);
     g.insertFile("data.txt");
 
@@ -23,5 +26,5 @@ int main(){
     graph.omegaPrint();
 
     cout << "Tiempo de ejecución: " << (float)time_req/CLOCKS_PER_SEC << " s \n";
-
+*/
 }
